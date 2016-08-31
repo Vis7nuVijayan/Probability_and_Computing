@@ -1,0 +1,97 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Solution
+{
+	public static final int INPUT = 1000;
+	public static final int roundsPerM = 1;
+	public static final int NoOfM = 1;
+	
+	static double[] getRandomRating(int n)
+	{
+		double temp[] = new double[n];
+		for(int i=0; i<n; ++i)
+			temp[i] = Math.random();
+		return temp;
+	}
+	
+	static void getInput(int i, int[] inputM, double[] rating, int[] success)
+	{
+		HashSet<Integer> selectedM = new HashSet();
+		Scanner scan = new Scanner(System.in);
+		int m = scan.nextInt();
+		inputM[i] = m;
+		int j=0;
+		while(j < roundsPerM)
+		{
+			double max = getMaximumM(m, rating, selectedM);
+			int index = hireTheBest(max, rating, selectedM);
+			if(index >= 0)
+			{
+				for(int a=0;a<INPUT; ++a)
+				{
+					if(!selectedM.contains(a))
+					{
+						if(rating[a] > rating[index])
+							break;
+					}
+				}
+				success[i]++;
+			}
+			++j;
+		}
+	}
+	
+	static double getMaximumM(int m, double[] rating, HashSet<Integer> selectedM)
+	{
+		selectedM.clear();
+		double max = Double.MIN_VALUE;
+		while(m > 0)
+		{
+			--m;
+			int temp = (int)(Math.random()*1000);
+			if(selectedM.contains(temp))
+				++m;
+			else
+			{
+				selectedM.add(temp);
+				if(max < rating[temp])
+					max = rating[temp];
+			}
+		}
+		return max;
+	}
+	
+	static int hireTheBest(double max, double[] rating, HashSet<Integer> selectedM)
+	{
+		int m = selectedM.size();
+		while(m < INPUT)
+		{
+			++m;
+			int temp = (int)(Math.random()*1000);
+			if(selectedM.contains(temp))
+				--m;
+			else
+			{
+				selectedM.add(temp);
+				if(max < rating[temp])
+					return temp;
+			}
+		}
+		return -1;
+	}
+	
+	public static void main(String args[])
+	{
+		int[] inputM = new int[10];
+		int[] success = new int[NoOfM];
+		double[] rating = getRandomRating(INPUT);
+		int i = 0;
+		while(i < NoOfM)
+		{
+			getInput(i, inputM, rating, success);
+			++i;
+		}
+		System.out.println(inputM[0]+" "+success[0]);
+	}
+}

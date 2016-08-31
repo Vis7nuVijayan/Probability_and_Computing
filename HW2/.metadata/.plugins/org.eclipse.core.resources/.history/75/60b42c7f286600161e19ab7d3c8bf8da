@@ -1,0 +1,63 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Solution
+{
+	public static final int INPUT = 1000;
+	public static final int roundsPerM = 100;
+	public static final int NoOfM = 10;
+	
+	static double[] getRandomRating(int n)
+	{
+		double temp[] = new double[n];
+		for(int i=0; i<n; ++i)
+			temp[i] = Math.random();
+		return temp;
+	}
+	
+	static void getInput(int i, int[] inputM)
+	{
+		HashSet<Integer> selectedM = new HashSet();
+		Scanner scan = new Scanner(System.in);
+		int m = scan.nextInt();
+		inputM[i] = m;
+		getRandomM(m, selectedM);
+		hireTheBest();
+	}
+	
+	static void getRandomM(int m, HashSet<Integer> selectedM)
+	{
+		selectedM.clear();
+		while(m > 0)
+		{
+			--m;
+			int temp = (int)(Math.random()*1000);
+			if(selectedM.contains(temp))
+				++m;
+			else
+				selectedM.add(temp);
+		}
+	}
+	
+	static void hireTheBest()
+	{
+		int i = 0;
+		while(i < roundsPerM)
+		{
+			++i;
+		}
+	}
+	
+	public static void main(String args[])
+	{
+		int[] inputM = new int[10];
+		int[] success = new int[INPUT];
+		double[] rating = getRandomRating(INPUT);
+		int i = 0;
+		while(i < NoOfM)
+		{
+			getInput(i, inputM);
+			++i;
+		}
+	}
+}
